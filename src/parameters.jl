@@ -11,7 +11,6 @@ function getdice2016r2excelparameters(filename)
     p_shared = Dict{Symbol, Any}()
 
     T = 100
-    PROT = 0 #because regular dice is ad-dice with protection level 0
     
     #Open DICE_2016R2 Excel File to Read Parameters - file revised to reflect change in damage coefficient
     f = readxlsx(filename)
@@ -67,6 +66,7 @@ function getdice2016r2excelparameters(filename)
     p_unshared[(:damages, :a1)]   = getparams(f, "B25:B25", :single, "Base", 1)   #Damage coefficient on temperature
     p_unshared[(:damages, :a2)]   = getparams(f, "B26:B26", :single, "Base", 1)   #Damage quadratic term
     p_unshared[(:damages, :a3)]   = getparams(f, "B27:B27", :single, "Base", 1)   #Damage exponent
+    p_unshared[(:damages, :PROT)] = zeros(100)     #because regular dice is ad-dice with protection level 0
 
     p_unshared[(:neteconomy, :gback)]       = getparams(f, "B26:B26", :single, "Parameters", 1) #Initial cost decline backstop cost per period
     p_unshared[(:neteconomy, :expcost2)]    = getparams(f, "B39:B39", :single, "Base", 1)       #Exponent of control cost function
