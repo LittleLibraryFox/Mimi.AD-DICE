@@ -78,7 +78,7 @@ function construct_objective(m::Model, optimised_mitigation_saving::Array{Float6
     # update S (savings rate)
     update_param!(m, :neteconomy, :S, [Vector{Missing}(missing, backup_timesteps); optimised_mitigation_saving[n_objectives+1:2 .* n_objectives]])
     # update PROT (protection level)
-    update_param!(m, :damages, :PROT, [Vector{Missing}(missing, backup_timesteps); optimised_mitigation_saving[2 .* n_objectives:end]])
+    update_param!(m, :damages, :PROT, [Vector{Missing}(missing, backup_timesteps); optimised_mitigation_saving[2 .* n_objectives+1:end]])
     # re-build model to evaluate welfare effects
     run(m)
     return m[:welfare, :UTILITY]
