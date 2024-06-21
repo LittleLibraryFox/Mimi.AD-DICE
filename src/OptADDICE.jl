@@ -1,4 +1,4 @@
-module OptMimiDICE2016R2
+module OptADDICE
 
 using Mimi
 using XLSX: readxlsx
