@@ -43,7 +43,7 @@ function constructdice(params)
     add_comp!(m, welfare, :welfare)
 
 	
-    print("done adding components\n") #potential debugging code 
+  
     #--------------------------------------------------------------------------
     # Make internal parameter connections
     #--------------------------------------------------------------------------
@@ -74,7 +74,7 @@ function constructdice(params)
         update_param!(m, name[1], name[2], value)
     end
 
-    update_param!(m, :damages, :PROT, zeros(length(:time)))
+    update_param!(m, :damages, :PROT, 100)
     update_param!(m, :damages, :g1, 0)
     update_param!(m, :damages, :g2, 0)
 	
