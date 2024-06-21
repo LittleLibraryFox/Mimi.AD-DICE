@@ -75,8 +75,8 @@ function constructdice(params)
     end
 
     update_param!(m, :damages, :PROT, zeros(100))
-    update_param!(m, :damages, :g1, 0)
-    update_param!(m, :damages, :g2, 0)
+    update_param!(m, :damages, :g1, 0.115)   #from paper (Bruin et. al, 2009)
+    update_param!(m, :damages, :g2, 3.60)    #from paper (Bruin et al., 2009)
 	
     # Set shared parameters - name is a Symbol representing the param_name, here
     # we will create a shared model parameter with the same name as the component
