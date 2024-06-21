@@ -2,23 +2,23 @@ using Test
 using XLSX: readxlsx
 using DataFrames
 using Mimi
-include("../src/OptMimiDICE2016R2.jl"); using Main.OptMimiDICE2016R2
+include("../src/Mimi.AD-DICE.jl"); using Main.Mimi.AD-DICE
 using CSVFiles
 
-using Main.OptMimiDICE2016R2: getparams
+using Main.Mimi.AD-DICE: getparams
 
-@testset "OptMimiDICE2016R2" begin
+@testset "Mimi.AD-DICE" begin
 
     #------------------------------------------------------------------------------
     #   1. Run tests on the whole model
     #------------------------------------------------------------------------------
 
-    @testset "OptMimiDICE2016R2-model" begin
+    @testset "Mimi.AD-DICE-model" begin
 
 
         df = load(joinpath(@__DIR__, "../data/Dice2016-R2-GAMSoutputs.csv")) |> DataFrame
 
-        m = Main.OptMimiDICE2016R2.get_model();
+        m = Main.Mimi.AD-DICE.get_model();
         run(m)
 
         # TODO: validate this model, noting we will need to update certain parameters 
@@ -72,40 +72,40 @@ using Main.OptMimiDICE2016R2: getparams
 
     @testset "Standard API" begin
 
-        m = Main.OptMimiDICE2016R2.get_model()
+        m = Main.Mimi.AD-DICE.get_model()
         run(m)
 
         # Test the errors
-        @test_throws ErrorException Main.OptMimiDICE2016R2.compute_scc()  # test that it errors if you don't specify a year
-        @test_throws ErrorException Main.OptMimiDICE2016R2.compute_scc(year=2021)  # test that it errors if the year isn't in the time index
-        @test_throws ErrorException Main.OptMimiDICE2016R2.compute_scc(last_year=2299)  # test that it errors if the last_year isn't in the time index
-        @test_throws ErrorException Main.OptMimiDICE2016R2.compute_scc(year=2105, last_year=2100)  # test that it errors if the year is after last_year
+        @test_throws ErrorException Main.Mimi.AD-DICE.compute_scc()  # test that it errors if you don't specify a year
+        @test_throws ErrorException Main.Mimi.AD-DICE.compute_scc(year=2021)  # test that it errors if the year isn't in the time index
+        @test_throws ErrorException Main.Mimi.AD-DICE.compute_scc(last_year=2299)  # test that it errors if the last_year isn't in the time index
+        @test_throws ErrorException Main.Mimi.AD-DICE.compute_scc(year=2105, last_year=2100)  # test that it errors if the year is after last_year
 
         # Test the SCC 
-        scc1 = Main.OptMimiDICE2016R2.compute_scc(year=2020)
+        scc1 = Main.Mimi.AD-DICE.compute_scc(year=2020)
         @test scc1 isa Float64
 
         # Test that it's smaller with a shorter horizon
-        scc2 = Main.OptMimiDICE2016R2.compute_scc(year=2020, last_year=2200)
+        scc2 = Main.Mimi.AD-DICE.compute_scc(year=2020, last_year=2200)
         @test scc2 < scc1
 
         # Test that it's smaller with a larger prtp
-        scc3 = Main.OptMimiDICE2016R2.compute_scc(year=2020, last_year=2200, prtp=0.02)
+        scc3 = Main.Mimi.AD-DICE.compute_scc(year=2020, last_year=2200, prtp=0.02)
         @test scc3 < scc2
 
         # Test with a modified model 
-        m = Main.OptMimiDICE2016R2.get_model()
+        m = Main.Mimi.AD-DICE.get_model()
         update_param!(m, :climatedynamics, :t2xco2, 5)
-        scc4 = Main.OptMimiDICE2016R2.compute_scc(m, year=2020)
+        scc4 = Main.Mimi.AD-DICE.compute_scc(m, year=2020)
         @test scc4 > scc1   # Test that a higher value of climate sensitivty makes the SCC bigger
 
         # Test compute_scc_mm
-        result = Main.OptMimiDICE2016R2.compute_scc_mm(year=2030)
+        result = Main.Mimi.AD-DICE.compute_scc_mm(year=2030)
         @test result.scc isa Float64
         @test result.mm isa Mimi.MarginalModel
         marginal_temp = result.mm[:climatedynamics, :TATM]
-        @test all(marginal_temp[1:findfirst(isequal(2030), Main.OptMimiDICE2016R2.model_years)] .== 0.)
-        @test all(marginal_temp[findfirst(isequal(2035), Main.OptMimiDICE2016R2.model_years):end] .!= 0.)
+        @test all(marginal_temp[1:findfirst(isequal(2030), Main.Mimi.AD-DICE.model_years)] .== 0.)
+        @test all(marginal_temp[findfirst(isequal(2035), Main.Mimi.AD-DICE.model_years):end] .!= 0.)
 
     end
 
@@ -117,7 +117,7 @@ using Main.OptMimiDICE2016R2: getparams
 
         atol = 1e-6 # TODO what is a reasonable tolerance given we test on a few different machines etc.
 
-        # Test several validation configurations against the pre-saved values from previous version OptMimiDICE2016R2
+        # Test several validation configurations against the pre-saved values from previous version Mimi.AD-DICE
         specs = Dict([
             :year => [2020],
             :eta => [0, 1.5],
@@ -131,7 +131,7 @@ using Main.OptMimiDICE2016R2: getparams
             for eta in specs[:eta]
                 for prtp in specs[:prtp]
                     for last_year in specs[:last_year]
-                        sc = Main.OptMimiDICE2016R2.compute_scc(year=Int(year), eta=eta, prtp=prtp, last_year=Int(last_year))
+                        sc = Main.Mimi.AD-DICE.compute_scc(year=Int(year), eta=eta, prtp=prtp, last_year=Int(last_year))
                         push!(results, (year, eta, prtp, last_year, sc))
                     end
                 end
@@ -151,18 +151,18 @@ using Main.OptMimiDICE2016R2: getparams
     @testset "Optimisation API" begin
 
         # Test the errors
-        @test_throws ErrorException Main.OptMimiDICE2016R2.optimise_model(n_objectives=45)  # test that it errors if number of objectives does not correspond to number time steps in m
+        @test_throws ErrorException Main.Mimi.AD-DICE.optimise_model(n_objectives=45)  # test that it errors if number of objectives does not correspond to number time steps in m
         
         # Test the optimise_model output 
-        result = Main.OptMimiDICE2016R2.optimise_model()
+        result = Main.Mimi.AD-DICE.optimise_model()
         @test result.m isa Mimi.Model
         @test result.diagnostic isa Dict
 
         # Compare model with modified version (higher ECS, which should lead to more mitigation) 
-        m1 = Main.OptMimiDICE2016R2.optimise_model().m
-        m2 = Main.OptMimiDICE2016R2.get_model()
+        m1 = Main.Mimi.AD-DICE.optimise_model().m
+        m2 = Main.Mimi.AD-DICE.get_model()
         update_param!(m2, :climatedynamics, :t2xco2, 5)
-        m2 = Main.OptMimiDICE2016R2.optimise_model(m2).m
+        m2 = Main.Mimi.AD-DICE.optimise_model(m2).m
         
         miu_sum1 = sum(m1[:neteconomy, :MIU])
         miu_sum2 = sum(m2[:neteconomy, :MIU])
@@ -171,6 +171,6 @@ using Main.OptMimiDICE2016R2: getparams
 
     end
 
-end #OptMimiDICE2016R2 testset
+end #Mimi.AD-DICE testset
 
 nothing

@@ -29,14 +29,14 @@ function optimise_model(m::Model=get_model(); n_objectives::Int=length(model_yea
     n_objectives + backup_timesteps != length(m.md.dim_dict[:time]) ? error("Number of objectives must correspond to number of timesteps of given model m.") : nothing
 
     # Create lower bound
-    lower_bound = [0.039; zeros(n_objectives-1); zeros(n_objectives)]
+    lower_bound = [0.039; zeros(n_objectives-1); zeros(n_objectives); zeros(n_objectives)]
     # Create upper bound    
-    upper_bound = [0.039; ones(28); 1.2 .* ones(n_objectives-29); ones(n_objectives)] # assume NETs after 2150 and 3.9% emissions reduction in 2015
+    upper_bound = [0.039; ones(28); 1.2 .* ones(n_objectives-29); ones(n_objectives); ones(n_objectives)] # assume NETs after 2150 and 3.9% emissions reduction in 2015
     
     # Create initial condition for algorithm
-    starting_point = [0.03 .* ones(n_objectives); 0.3 .* ones(n_objectives)] # 0.03 as a start for the baseline and for optimised run (miu0 in GAMS code) & 0.3 as an initial savings rate
+    starting_point = [0.03 .* ones(n_objectives); 0.3 .* ones(n_objectives); zeros(n_objectives)] # 0.03 as a start for the baseline and for optimised run (miu0 in GAMS code) & 0.3 as an initial savings rate & 0 adaptattions as initial
     
-    opt = Opt(optimization_algorithm, 2*n_objectives)
+    opt = Opt(optimization_algorithm, 3*n_objectives)
 
     # Set the bounds.
     lower_bounds!(opt, lower_bound)
