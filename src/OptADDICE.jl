@@ -14,7 +14,7 @@ include("components/emissions_component.jl")
 include("components/co2cycle_component.jl")
 include("components/radiativeforcing_component.jl")
 include("components/climatedynamics_component.jl")
-include("components/modified_damages_adapt.jl")   #changed damages_component to the modified which includes adaptation
+include("components/damages_component.jl")   #changed damages_component
 include("components/neteconomy_component.jl")
 include("components/welfare_component.jl")
 include("optimise.jl")
@@ -38,7 +38,7 @@ function constructdice(params)
     add_comp!(m, co2cycle, :co2cycle)
     add_comp!(m, radiativeforcing, :radiativeforcing)
     add_comp!(m, climatedynamics, :climatedynamics)
-    add_comp!(m, modified_damages_adapt, :modified_damages_adapt)
+    add_comp!(m, damages, :damages)
     add_comp!(m, neteconomy, :neteconomy)
     add_comp!(m, welfare, :welfare)
 
@@ -57,10 +57,10 @@ function constructdice(params)
     connect_param!(m, :climatedynamics, :FORC, :radiativeforcing, :FORC)
 
     # Damages
-    connect_param!(m, :modified_damages_adapt, :TATM, :climatedynamics, :TATM)
-    connect_param!(m, :modified_damages_adapt, :YGROSS, :grosseconomy, :YGROSS)
+    connect_param!(m, :damages, :TATM, :climatedynamics, :TATM)
+    connect_param!(m, :damages, :YGROSS, :grosseconomy, :YGROSS)
     connect_param!(m, :neteconomy, :YGROSS, :grosseconomy, :YGROSS)
-    connect_param!(m, :neteconomy, :DAMAGES, :modified_damages_adapt, :DAMAGES)
+    connect_param!(m, :neteconomy, :DAMAGES, :damages, :DAMAGES)
 	connect_param!(m, :neteconomy, :SIGMA, :emissions, :SIGMA)
     connect_param!(m, :welfare, :CPC, :neteconomy, :CPC)
 
