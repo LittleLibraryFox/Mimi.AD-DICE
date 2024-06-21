@@ -71,7 +71,11 @@ function constructdice(params)
     for (name, value) in params[:unshared]
         update_param!(m, name[1], name[2], value)
     end
-    
+
+    update_param!(m, :damages, :PROT, zeros(length(:time)))
+    update_param!(m, :damages, :g1, 0)
+    update_param!(m, :damages, :g2, 0)
+	
     # Set shared parameters - name is a Symbol representing the param_name, here
     # we will create a shared model parameter with the same name as the component
     # parameter and then connect our component parameters to this shared model parameter
