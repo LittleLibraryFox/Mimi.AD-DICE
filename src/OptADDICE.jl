@@ -42,6 +42,7 @@ function constructdice(params)
     add_comp!(m, neteconomy, :neteconomy)
     add_comp!(m, welfare, :welfare)
 
+	#print("done adding components\n") #potential debugging code 
     #--------------------------------------------------------------------------
     # Make internal parameter connections
     #--------------------------------------------------------------------------
@@ -61,7 +62,7 @@ function constructdice(params)
     connect_param!(m, :damages, :YGROSS, :grosseconomy, :YGROSS)
     connect_param!(m, :neteconomy, :YGROSS, :grosseconomy, :YGROSS)
     connect_param!(m, :neteconomy, :DAMAGES, :damages, :DAMAGES)
-	connect_param!(m, :neteconomy, :SIGMA, :emissions, :SIGMA)
+    connect_param!(m, :neteconomy, :SIGMA, :emissions, :SIGMA)
     connect_param!(m, :welfare, :CPC, :neteconomy, :CPC)
 
     #--------------------------------------------------------------------------
