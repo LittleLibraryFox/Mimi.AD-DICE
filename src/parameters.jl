@@ -11,6 +11,7 @@ function getdice2016r2excelparameters(filename)
     p_shared = Dict{Symbol, Any}()
 
     T = 100
+    PROT = 0 #because regular dice is ad-dice with protection level 0
     
     #Open DICE_2016R2 Excel File to Read Parameters - file revised to reflect change in damage coefficient
     f = readxlsx(filename)
