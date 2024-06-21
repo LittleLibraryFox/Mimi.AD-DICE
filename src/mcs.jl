@@ -9,7 +9,7 @@ dice_default_mcs = @defsim begin
 	totalfactorproductivity.ga0 = Normal(0.076, 0.056)
 	emissions.gsigma1 = Normal(-0.0152, 0.0032)
 	co2cycle.mueq = LogNormal(5.851, 0.2649)
-	modified_damages_adapt.a2 = Normal(0.00227, 0.001135)
+	damages.a2 = Normal(0.00227, 0.001135)
 
     # save(damages.DAMAGES)
 	# save(grosseconomy.YGROSS)
