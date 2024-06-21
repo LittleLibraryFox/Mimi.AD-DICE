@@ -1,5 +1,5 @@
 # Add as policy variable the adaptation costs
-@defcomp modified_damages_adapt begin
+@defcomp damages begin
     DAMAGES = Variable(index=[time])    #Damages (trillions 2010 USD per year)
     GROSSDAM = Variable(index=[time])  #Gross damages (divided by YGROSS)
     RESDAM = Variable(index=[time])    #Damages (residual damages)
