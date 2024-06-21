@@ -63,9 +63,9 @@ function getdice2016r2excelparameters(filename)
     p_unshared[(:climatedynamics, :tatm0)]    = getparams(f, "B76:B76", :single, "Base", 1)   #Initial atmospheric temp change 2015 (C from 1940-60)
     p_unshared[(:climatedynamics, :tocean0)]  = getparams(f, "B77:B77", :single, "Base", 1)   #Initial temperature of deep oceans (deg C above 1940-60)
 
-    p_unshared[(:modified_damages_adapt, :a1)]   = getparams(f, "B25:B25", :single, "Base", 1)   #Damage coefficient on temperature
-    p_unshared[(:modified_damages_adapt, :a2)]   = getparams(f, "B26:B26", :single, "Base", 1)   #Damage quadratic term
-    p_unshared[(:modified_damages_adapt, :a3)]   = getparams(f, "B27:B27", :single, "Base", 1)   #Damage exponent
+    p_unshared[(:damages, :a1)]   = getparams(f, "B25:B25", :single, "Base", 1)   #Damage coefficient on temperature
+    p_unshared[(:damages, :a2)]   = getparams(f, "B26:B26", :single, "Base", 1)   #Damage quadratic term
+    p_unshared[(:damages, :a3)]   = getparams(f, "B27:B27", :single, "Base", 1)   #Damage exponent
 
     p_unshared[(:neteconomy, :gback)]       = getparams(f, "B26:B26", :single, "Parameters", 1) #Initial cost decline backstop cost per period
     p_unshared[(:neteconomy, :expcost2)]    = getparams(f, "B39:B39", :single, "Base", 1)       #Exponent of control cost function
