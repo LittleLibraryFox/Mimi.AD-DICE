@@ -42,7 +42,8 @@ function constructdice(params)
     add_comp!(m, neteconomy, :neteconomy)
     add_comp!(m, welfare, :welfare)
 
-	#print("done adding components\n") #potential debugging code 
+	
+    print("done adding components\n") #potential debugging code 
     #--------------------------------------------------------------------------
     # Make internal parameter connections
     #--------------------------------------------------------------------------
