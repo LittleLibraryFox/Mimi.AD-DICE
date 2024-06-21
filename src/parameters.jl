@@ -66,7 +66,7 @@ function getdice2016r2excelparameters(filename)
     p_unshared[(:damages, :a1)]   = getparams(f, "B25:B25", :single, "Base", 1)   #Damage coefficient on temperature
     p_unshared[(:damages, :a2)]   = getparams(f, "B26:B26", :single, "Base", 1)   #Damage quadratic term
     p_unshared[(:damages, :a3)]   = getparams(f, "B27:B27", :single, "Base", 1)   #Damage exponent
-    p_unshared[(:damages, :PROT)] = zeros(length(:time))     #because regular dice is ad-dice with protection level 0
+    p_unshared[(:damages, :PROT)] = zeros(T)     #because regular dice is ad-dice with protection level 0
     p_unshared[(:damages, :g1)] = 0      #because regular dice is ad-dice with protection level 0 hence protection costs 0
     p_unshared[(:damages, :g2)] = 0      #because regular dice is ad-dice with protection level 0 hence protection costs 0
 
